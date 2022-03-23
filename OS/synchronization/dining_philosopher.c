@@ -40,7 +40,7 @@ void	test(int i)
 	&& state[rightOf(i)] != EATING)
 	{
 		state[i] = EATING;
-		pthread_cond_signal(&cond_vars[i]); // 먹을 때까지 기다려
+		pthread_cond_signal(&cond_vars[i]); // 대기중인 프로세스를 깨운다.
 	}
 }
 
@@ -51,7 +51,7 @@ void	pickup(int i)
 	state[i] = SLEEPING;
 	test(i);
 	while (state[i] != EATING)
-		pthread_cond_wait(&cond_vars[i], &mutex_lock);
+		pthread_cond_wait(&cond_vars[i], &mutex_lock); // 프로세스를 대기상태로 만든다.
 	pthread_mutex_unlock(&mutex_lock);
 }
 
